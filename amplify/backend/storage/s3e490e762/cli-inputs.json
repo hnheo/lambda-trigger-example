@@ -1,0 +1,18 @@
+{
+  "resourceName": "s3e490e762",
+  "policyUUID": "e490e762",
+  "bucketName": "lambdatriggerexample2fff17c190514f7c8212afa5a96",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "S3Trigger2d467766",
+  "groupAccess": {}
+}

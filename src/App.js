@@ -1,25 +1,46 @@
 import logo from './logo.svg';
 import './App.css';
+import React, {useEffect, useState} from 'react';
+import {Auth} from 'aws-amplify';
+import {withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react'
+import {Storage} from 'aws-amplify';
+import {v4 as uuid} from 'uuid';
+import './App.css'
 
 function App() {
+  const [images, setImages] = useState([])
+  useEffect(() => {
+    fetchImages()
+  }, [])
+  async function onChange(e) {
+    const file = e.target.files[0];
+    const filetype = file.name.split('.')[file.name.split.length -1]
+    await Storage.put(`${uuid()}.${filetype}`, file)
+    fetchImages()
+  }
+  async function fetchImages() {
+    const files = await Storage.list('')
+    const signedFiles = await Promise.all(files.map(async file => {
+      const signedFile = await Storage.get(file.key)
+      return signedFile
+    }))
+    setImages(signedFiles)
+  }
   return (
     <div className="App">
+      <p>201603746 허호녕</p>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <input type="file"
+        onChange={onChange}
+        />
+        {
+          images.map(image => (
+            <img src = {image} key = {image} style = {{width:500}}/>
+          ))
+        }
       </header>
     </div>
   );
 }
 
-export default App;
+export default App
